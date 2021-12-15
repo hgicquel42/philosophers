@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:55 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/15 12:26:15 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/15 15:03:39 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,14 @@
 # include <pthread.h>
 # include <stdbool.h>
 
+typedef struct s_state
+{
+	t_params	params;
+	t_philo		*philos;
+	t_mutex		*forks;
+	t_mutex		print;
+}	t_state;
+
 typedef struct s_params
 {
 	int		count;
@@ -34,6 +42,9 @@ typedef struct s_philo
 {
 	int			index;
 	pthread_t	thread;
+	t_state		*state;
 }	t_philo;
+
+typedef pthread_mutex_t	t_mutex;
 
 #endif
