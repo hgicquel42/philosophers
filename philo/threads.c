@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 13:52:33 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/15 17:40:47 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/15 18:27:16 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	run(t_philo *d)
 	s = d->state;
 	i = d->index;
 	n = 0;
-	while (n < s->params.maxeat)
+	while (1)
 	{
 		if (!print(s, i, "is thinking"))
 			return (0);
@@ -32,6 +32,8 @@ bool	run(t_philo *d)
 		if (!print(s, i, "is eating"))
 			return (0);
 		usleep(s->params.tteat * 1000);
+		if (n++ == s->params.maxeat && !incfull(s))
+			return (0);
 		if (!unlock(s, i) || !unlock(s, i + 1))
 			return (0);
 		if (!print(s, i, "is sleeping"))
