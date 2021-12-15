@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 14:08:58 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/15 15:19:02 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/15 17:41:47 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,22 @@
 t_mutex	*getfork(t_state *s, int i)
 {
 	return (s->forks + (i % s->params.count));
+}
+
+bool	lock(t_state *s, int i)
+{
+	if (pthread_mutex_lock(getfork(s, i)))
+		return (0);
+	if (!print(s, i, "has taken a fork"))
+		return (0);
+	return (1);
+}
+
+bool	unlock(t_state *s, int i)
+{
+	if (pthread_mutex_unlock(getfork(s, i)))
+		return (0);
+	return (1);
 }
 
 bool	forks(t_state *s)

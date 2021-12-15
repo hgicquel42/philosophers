@@ -6,31 +6,46 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 13:52:33 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/15 15:19:31 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/15 17:40:47 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-void	run(t_philo *d)
+bool	run(t_philo *d)
 {
 	t_state	*s;
 	int		i;
-	t_mutex	*l;
-	t_mutex	*r;
+	int		n;
 
 	s = d->state;
 	i = d->index;
-	l = getfork(s, i);
-	r = getfork(s, i + 1);
-	pthread_mutex_lock(l);
-	pthread_mutex_lock(r);
-	
+	n = 0;
+	while (n < s->params.maxeat)
+	{
+		if (!print(s, i, "is thinking"))
+			return (0);
+		if (!lock(s, i + (i == 0)))
+			return (0);
+		if (!lock(s, i + (i != 0)))
+			return (0);
+		if (!print(s, i, "is eating"))
+			return (0);
+		usleep(s->params.tteat * 1000);
+		if (!unlock(s, i) || !unlock(s, i + 1))
+			return (0);
+		if (!print(s, i, "is sleeping"))
+			return (0);
+		usleep(s->params.ttsleep * 1000);
+	}
+	return (1);
 }
 
-void	thread(void *p)
+void	*thread(void *p)
 {
-	run(p);
+	if (!run(p))
+		printf("An error occured in a thread\n");
+	return (0);
 }
 
 bool	spawn(t_state *s, t_philo *a, int i)

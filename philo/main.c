@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:25 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/15 14:11:49 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/15 17:41:03 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 bool	parse(int argc, char **argv, t_state *s)
 {
-	int	t;
-
 	s->params.count = ft_atoui(argv[1]);
 	s->params.ttdie = ft_atoul(argv[2]);
 	s->params.tteat = ft_atoul(argv[3]);

@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:55 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/15 15:03:39 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/15 17:40:30 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,9 @@
 # include <pthread.h>
 # include <stdbool.h>
 
-typedef struct s_state
-{
-	t_params	params;
-	t_philo		*philos;
-	t_mutex		*forks;
-	t_mutex		print;
-}	t_state;
+typedef struct s_state	t_state;
+
+typedef pthread_mutex_t	t_mutex;
 
 typedef struct s_params
 {
@@ -45,6 +41,28 @@ typedef struct s_philo
 	t_state		*state;
 }	t_philo;
 
-typedef pthread_mutex_t	t_mutex;
+typedef struct s_state
+{
+	t_params	params;
+	t_philo		*philos;
+	t_mutex		*forks;
+	t_mutex		print;
+}	t_state;
+
+int		ft_atoui(char *s);
+
+long	ft_atoul(char *s);
+
+bool	forks(t_state *s);
+
+bool	lock(t_state *s, int i);
+
+bool	unlock(t_state *s, int i);
+
+bool	threads(t_state *s);
+
+bool	print(t_state *s, int i, char *msg);
+
+int		free0(void *p);
 
 #endif
