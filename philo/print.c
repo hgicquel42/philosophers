@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 15:04:31 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/15 17:32:25 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/15 18:22:26 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ bool	gettime(long *r)
 
 	if (gettimeofday(&time, NULL))
 		return (0);
-	*r = (time.tv_usec / 1000);
+	*r = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	return (1);
 }
 

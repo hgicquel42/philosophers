@@ -1,50 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   forks.c                                            :+:      :+:    :+:   */
+/*   full.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/15 14:08:58 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/15 17:51:19 by hgicquel         ###   ########.fr       */
+/*   Created: 2021/12/15 18:03:21 by hgicquel          #+#    #+#             */
+/*   Updated: 2021/12/15 18:26:28 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-t_mutex	*getfork(t_state *s, int i)
+bool	incfull(t_state *s)
 {
-	return (s->forks + (i % s->params.count));
-}
-
-bool	lock(t_state *s, int i)
-{
-	if (pthread_mutex_lock(getfork(s, i)))
+	if (pthread_mutex_lock(&s->full))
 		return (0);
-	if (!print(s, i, "has taken a fork"))
+	s->nfull++;
+	print(s, 999, "incfull");
+	if (pthread_mutex_unlock(&s->full))
 		return (0);
 	return (1);
 }
 
-bool	unlock(t_state *s, int i)
+bool	getfull(t_state *s, int *r)
 {
-	if (pthread_mutex_unlock(getfork(s, i)))
+	if (pthread_mutex_lock(&s->full))
 		return (0);
-	return (1);
-}
-
-bool	forks(t_state *s)
-{
-	t_mutex	*a;
-	int		i;
-
-	a = malloc(s->params.count * sizeof(t_mutex));
-	if (!a)
+	*r = s->nfull;
+	if (pthread_mutex_unlock(&s->full))
 		return (0);
-	i = -1;
-	while (++i < s->params.count)
-		if (pthread_mutex_init(a + i++, NULL))
-			return (free0(a));
-	s->forks = a;
 	return (1);
 }
