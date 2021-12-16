@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:55 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 18:14:21 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 18:26:57 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ typedef struct s_params
 typedef struct s_philo
 {
 	int			index;
-	pthread_t	thread;
+	pthread_t	life;
+	pthread_t	monitor;
 	long		teated;
 	t_mutex		eating;
 	t_state		*state;

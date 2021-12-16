@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 13:52:33 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 18:16:40 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 18:27:15 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	eat(t_philo *d)
 	return (1);
 }
 
-bool	run(t_philo *d)
+bool	life(t_philo *d)
 {
 	t_state	*s;
 	int		i;
@@ -32,23 +32,17 @@ bool	run(t_philo *d)
 	s = d->state;
 	i = d->index;
 	n = 0;
-	if (i % 2 && !ft_sleep(s->params.tteat))
-		return (0);
 	if (!eat(d))
 		return (0);
 	while (1)
 	{
 		if (!print(s, i, "is thinking"))
 			return (0);
-		if (!lock(s, i, i + (i == 0)))
-			return (0);
-		if (!lock(s, i, i + (i != 0)))
+		if (!lock(s, i, i + (i == 0)) || !lock(s, i, i + (i != 0)))
 			return (0);
 		if (!print(s, i, "is eating"))
 			return (0);
-		if (!ft_sleep(s->params.tteat))
-			return (0);
-		if (!eat(d))
+		if (!ft_sleep(s->params.tteat) || !eat(d))
 			return (0);
 		if (n++ == s->params.maxeat && !incfull(s))
 			return (0);
@@ -62,9 +56,9 @@ bool	run(t_philo *d)
 	return (1);
 }
 
-void	*thread(void *p)
+void	*runlife(void *p)
 {
-	if (!run(p))
+	if (!life(p))
 		printf("An error occured in a thread\n");
 	return (0);
 }
@@ -75,9 +69,11 @@ bool	spawn(t_state *s, t_philo *a, int i)
 	a[i].state = s;
 	if (pthread_mutex_init(&a[i].eating, NULL))
 		return (0);
-	if (!eat(&a[i]))
+	if (i % 2 && !ft_sleep(s->params.tteat))
 		return (0);
-	if (pthread_create(&(a[i].thread), NULL, thread, a + i))
+	if (pthread_create(&(a[i].life), NULL, runlife, a + i))
+		return (0);
+	if (pthread_create(&(a[i].life), NULL, runmonitor, a + i))
 		return (0);
 	return (1);
 }

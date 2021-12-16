@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 12:01:22 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 18:15:44 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 18:27:20 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,33 +26,26 @@ bool	printdeath(t_state *s, int i, long t)
 	return (1);
 }
 
-bool	checkdeath(t_state *s)
+bool	monitor(t_philo *d)
 {
-	int		i;
 	long	t;
 
-	while (1)
+	while (ft_time(&t))
 	{
-		i = -1;
-		while (++i < s->params.count)
-		{
-			if (!ft_time(&t))
-				return (1);
-			if (pthread_mutex_lock(&s->philos[i].eating))
-				return (1);
-			if (t - s->philos[i].teated > s->params.ttdie)
-				return (printdeath(s, i, t));
-			if (pthread_mutex_unlock(&s->philos[i].eating))
-				return (1);
-		}
-		// usleep(1000);
+		if (pthread_mutex_lock(&s->philos[i].eating))
+			return (0);
+		if (t - s->philos[i].teated > s->params.ttdie)
+			return (printdeath(s, i, t));
+		if (pthread_mutex_unlock(&s->philos[i].eating))
+			return (0);
 	}
-	return (1);
+	return (0);
 }
 
-void	*runcheckdeath(void *p)
+void	*runmonitor(void *p)
 {
-	if (!checkdeath(p))
+	if (!monitor(p))
 		printf("An error occured in a thread\n");
 	return (0);
 }
+
