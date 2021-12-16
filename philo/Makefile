@@ -7,6 +7,7 @@ INPUT = \
 	threads.c \
 	utils.c \
 	full.c \
+	death.c \
 
 OUTPUT = ${INPUT:.c=.o}
 

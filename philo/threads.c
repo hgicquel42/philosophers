@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 13:52:33 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/15 18:27:16 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 12:40:43 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ bool	run(t_philo *d)
 		if (!print(s, i, "is eating"))
 			return (0);
 		usleep(s->params.tteat * 1000);
+		if (!gettime(&d->tate))
+			return (0);
 		if (n++ == s->params.maxeat && !incfull(s))
 			return (0);
 		if (!unlock(s, i) || !unlock(s, i + 1))
@@ -54,6 +56,8 @@ bool	spawn(t_state *s, t_philo *a, int i)
 {
 	a[i].index = i;
 	a[i].state = s;
+	if (!gettime(&a[i].tate))
+		return (0);
 	if (pthread_create(&(a[i].thread), NULL, thread, a + i))
 		return (0);
 	return (1);
@@ -67,8 +71,8 @@ bool	threads(t_state *s)
 	a = malloc(s->params.count * sizeof(t_philo));
 	if (!a)
 		return (0);
-	i = -1;
-	while (++i < s->params.count)
+	i = 0;
+	while (i < s->params.count)
 		if (!spawn(s, a, i++))
 			return (free0(a));
 	s->philos = a;

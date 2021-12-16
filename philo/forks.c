@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 14:08:58 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/15 17:51:19 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 11:54:49 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ bool	forks(t_state *s)
 	a = malloc(s->params.count * sizeof(t_mutex));
 	if (!a)
 		return (0);
-	i = -1;
-	while (++i < s->params.count)
+	i = 0;
+	while (i < s->params.count)
 		if (pthread_mutex_init(a + i++, NULL))
 			return (free0(a));
 	s->forks = a;

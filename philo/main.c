@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:25 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/15 18:13:47 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 12:55:25 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ bool	parse(int argc, char **argv, t_state *s)
 int	main(int argc, char **argv)
 {
 	t_state	s;
-	int		n;
 
 	if (argc < 4)
 		return (1);
@@ -45,10 +44,12 @@ int	main(int argc, char **argv)
 		return (1);
 	if (!threads(&s))
 		return (1);
-	n = 0;
-	while (n < s.params.count)
-		if (!getfull(&s, &n))
-			return (1);
-	printf("All philosophers have eaten\n");
+	if (pthread_create(&s.fullt, NULL, runcheckfull, &s))
+		return (1);
+	if (pthread_create(&s.deatht, NULL, runcheckdeath, &s))
+		return (1);
+	s.ended = 0;
+	while (!s.ended)
+		continue ;
 	return (0);
 }
