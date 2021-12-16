@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 13:52:33 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 19:27:47 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 19:39:08 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ bool	life(t_philo *d)
 	s = d->state;
 	i = d->index;
 	n = 0;
-	if (i % 2 && !ft_sleep(s->params.tteat))
-		return (0);
 	while (1)
 	{
 		if (!print(s, i, "is thinking"))
