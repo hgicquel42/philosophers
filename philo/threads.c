@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 13:52:33 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 15:49:10 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 15:55:41 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ bool	smart_sleep(long n)
 	if (!gettime(&start))
 		return (0);
 	while (gettime(&current))
+	{
 		if (current - start > n)
 			return (1);
 		else
 			usleep(1000);
+	}
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:25 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 15:40:46 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 15:55:59 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,11 @@ int	main(int argc, char **argv)
 	if (pthread_create(&s.deatht, NULL, runcheckdeath, &s))
 		return (1);
 	while (checkend(&s, &ended))
+	{
 		if (ended)
 			return (0);
 		else
-			usleep(10);
+			usleep(1000);
+	}
 	return (1);
 }
