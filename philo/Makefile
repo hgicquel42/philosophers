@@ -14,10 +14,10 @@ OUTPUT = ${INPUT:.c=.o}
 all:	${NAME}
 
 .c.o:
-	gcc -Wall -Wextra -Werror -pthread -c $< -o ${<:.c=.o}
+	gcc -Wall -Wextra -Werror -pthread -c $< -o ${<:.c=.o} -fsanitize=thread
 
 $(NAME): ${INPUT}
-	gcc -Wall -Wextra -Werror -pthread ${INPUT} -o ${NAME}
+	gcc -Wall -Wextra -Werror -pthread ${INPUT} -o ${NAME} -fsanitize=thread
 
 clean:
 	rm -f ${OUTPUT}

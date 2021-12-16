@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:55 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 12:54:44 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 15:36:50 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,14 @@ typedef struct s_philo
 {
 	int			index;
 	pthread_t	thread;
-	long		tate;
+	long		teated;
+	t_mutex		eating;
 	t_state		*state;
 }	t_philo;
 
 typedef struct s_state
 {
+	long		tstart;
 	t_params	params;
 	t_philo		*philos;
 	t_mutex		*forks;
@@ -52,6 +54,7 @@ typedef struct s_state
 	int			nfull;
 	pthread_t	fullt;
 	pthread_t	deatht;
+	t_mutex		ending;
 	bool		ended;
 }	t_state;
 
@@ -61,9 +64,9 @@ long	ft_atoul(char *s);
 
 bool	forks(t_state *s);
 
-bool	lock(t_state *s, int i);
+bool	lock(t_state *s, int i, int j);
 
-bool	unlock(t_state *s, int i);
+bool	unlock(t_state *s, int i, int j);
 
 bool	threads(t_state *s);
 
@@ -76,6 +79,8 @@ bool	incfull(t_state *s);
 bool	getfull(t_state *s, int *r);
 
 bool	allfull(t_state *s);
+
+bool	smart_sleep(long n);
 
 void	*runcheckfull(void *p);
 

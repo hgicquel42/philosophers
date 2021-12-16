@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 12:01:22 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 13:19:08 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 15:46:37 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ bool	printdeath(t_state *s, int i, long t)
 		return (0);
 	if (printf("%ld %d %s\n", t, i + 1, "died !!!!!!!!!!!!!") < 0)
 		return (0);
+	if (pthread_mutex_lock(&s->ending))
+		return (0);
 	s->ended = 1;
+	if (pthread_mutex_unlock(&s->ending))
+		return (0);
 	return (1);
 }
 
@@ -34,8 +38,12 @@ bool	checkdeath(t_state *s)
 		{
 			if (!gettime(&t))
 				return (1);
-			if (t - s->philos[i].tate > s->params.ttdie)
+			if (pthread_mutex_lock(&s->philos[i].eating))
+				return (1);
+			if (t - s->philos[i].teated > s->params.ttdie)
 				return (printdeath(s, i, t));
+			if (pthread_mutex_unlock(&s->philos[i].eating))
+				return (1);
 		}
 	}
 	return (1);

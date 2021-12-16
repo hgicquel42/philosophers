@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:25 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 12:55:25 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 15:40:46 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,20 @@ bool	parse(int argc, char **argv, t_state *s)
 	return (1);
 }
 
+bool	checkend(t_state *s, bool *r)
+{
+	if (pthread_mutex_lock(&s->ending))
+		return (0);
+	*r = s->ended;
+	if (pthread_mutex_unlock(&s->ending))
+		return (0);
+	return (1);
+}
+
 int	main(int argc, char **argv)
 {
 	t_state	s;
+	bool	ended;
 
 	if (argc < 4)
 		return (1);
@@ -37,8 +48,13 @@ int	main(int argc, char **argv)
 		return (1);
 	if (pthread_mutex_init(&s.full, NULL))
 		return (1);
+	if (pthread_mutex_init(&s.ending, NULL))
+		return (1);
+	s.ended = 0;
 	s.nfull = 0;
 	if (!parse(argc, argv, &s))
+		return (1);
+	if (!gettime(&s.tstart))
 		return (1);
 	if (!forks(&s))
 		return (1);
@@ -48,8 +64,10 @@ int	main(int argc, char **argv)
 		return (1);
 	if (pthread_create(&s.deatht, NULL, runcheckdeath, &s))
 		return (1);
-	s.ended = 0;
-	while (!s.ended)
-		continue ;
-	return (0);
+	while (checkend(&s, &ended))
+		if (ended)
+			return (0);
+		else
+			usleep(10);
+	return (1);
 }
