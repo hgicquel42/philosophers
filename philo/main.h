@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:55 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 18:26:57 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 19:20:17 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,9 @@ bool	allfull(t_state *s);
 
 void	*runcheckfull(void *p);
 
-void	*runcheckdeath(void *p);
+void	*runmonitor(void *p);
+
+bool	eat(t_philo *d);
 
 int		free0(void *p);
 

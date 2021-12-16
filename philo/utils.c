@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 17:33:00 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 18:05:47 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 19:21:58 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ bool	ft_sleep(long n)
 		return (0);
 	while (ft_time(&current))
 	{
-		if (current - start > n)
+		if (current - start >= n)
 			return (1);
-		usleep(1000);
+		usleep(10);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:25 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 18:02:05 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 19:13:46 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,25 @@ bool	checkend(t_state *s, bool *r)
 	return (1);
 }
 
+bool	loopend(t_state *s)
+{
+	bool	ended;
+
+	ended = 0;
+	while (checkend(s, &ended))
+	{
+		if (ended)
+			return (1);
+		usleep(100);
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_state	s;
-	bool	ended;
 
-	if (argc < 4)
-		return (1);
-	if (argc > 6)
+	if (argc < 4 || argc > 6)
 		return (1);
 	if (pthread_mutex_init(&s.print, NULL))
 		return (1);
@@ -54,21 +65,13 @@ int	main(int argc, char **argv)
 	s.nfull = 0;
 	if (!parse(argc, argv, &s))
 		return (1);
-	if (!ft_time(&s.tstart))
-		return (1);
 	if (!forks(&s))
 		return (1);
 	if (!threads(&s))
 		return (1);
 	if (pthread_create(&s.fullt, NULL, runcheckfull, &s))
 		return (1);
-	if (pthread_create(&s.deatht, NULL, runcheckdeath, &s))
+	if (!loopend(&s))
 		return (1);
-	while (checkend(&s, &ended))
-	{
-		if (ended)
-			return (0);
-		usleep(100);
-	}
-	return (1);
+	return (0);
 }
