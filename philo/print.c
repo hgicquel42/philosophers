@@ -6,21 +6,11 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 15:04:31 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 15:24:43 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 18:02:10 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
-
-bool	gettime(long *r)
-{
-	struct timeval	time;
-
-	if (gettimeofday(&time, NULL))
-		return (0);
-	*r = (time.tv_sec * 1000) + (time.tv_usec / 1000);
-	return (1);
-}
 
 bool	print(t_state *s, int i, char *msg)
 {
@@ -28,7 +18,7 @@ bool	print(t_state *s, int i, char *msg)
 
 	if (pthread_mutex_lock(&s->print))
 		return (0);
-	if (!gettime(&time))
+	if (!ft_time(&time))
 		return (0);
 	if (printf("%ld %d %s\n", time, i + 1, msg) < 0)
 		return (0);

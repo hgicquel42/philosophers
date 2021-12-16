@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:55 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 15:36:50 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 18:14:21 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ int		ft_atoui(char *s);
 
 long	ft_atoul(char *s);
 
+bool	ft_time(long *r);
+
+bool	ft_sleep(long n);
+
 bool	forks(t_state *s);
 
 bool	lock(t_state *s, int i, int j);
@@ -70,8 +74,6 @@ bool	unlock(t_state *s, int i, int j);
 
 bool	threads(t_state *s);
 
-bool	gettime(long *r);
-
 bool	print(t_state *s, int i, char *msg);
 
 bool	incfull(t_state *s);
@@ -79,8 +81,6 @@ bool	incfull(t_state *s);
 bool	getfull(t_state *s, int *r);
 
 bool	allfull(t_state *s);
-
-bool	smart_sleep(long n);
 
 void	*runcheckfull(void *p);
 

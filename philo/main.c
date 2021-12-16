@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:25 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 15:55:59 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 18:02:05 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	main(int argc, char **argv)
 	s.nfull = 0;
 	if (!parse(argc, argv, &s))
 		return (1);
-	if (!gettime(&s.tstart))
+	if (!ft_time(&s.tstart))
 		return (1);
 	if (!forks(&s))
 		return (1);
@@ -68,8 +68,7 @@ int	main(int argc, char **argv)
 	{
 		if (ended)
 			return (0);
-		else
-			usleep(1000);
+		usleep(100);
 	}
 	return (1);
 }

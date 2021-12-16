@@ -6,27 +6,21 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 13:52:33 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 15:55:41 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 18:16:40 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-bool	smart_sleep(long n)
+bool	eat(t_philo *d)
 {
-	long	start;
-	long	current;
-
-	if (!gettime(&start))
+	if (pthread_mutex_lock(&d->eating))
 		return (0);
-	while (gettime(&current))
-	{
-		if (current - start > n)
-			return (1);
-		else
-			usleep(1000);
-	}
-	return (0);
+	if (!ft_time(&d->teated))
+		return (0);
+	if (pthread_mutex_unlock(&d->eating))
+		return (0);
+	return (1);
 }
 
 bool	run(t_philo *d)
@@ -38,6 +32,10 @@ bool	run(t_philo *d)
 	s = d->state;
 	i = d->index;
 	n = 0;
+	if (i % 2 && !ft_sleep(s->params.tteat))
+		return (0);
+	if (!eat(d))
+		return (0);
 	while (1)
 	{
 		if (!print(s, i, "is thinking"))
@@ -48,12 +46,9 @@ bool	run(t_philo *d)
 			return (0);
 		if (!print(s, i, "is eating"))
 			return (0);
-		smart_sleep(s->params.tteat);
-		if (pthread_mutex_lock(&d->eating))
+		if (!ft_sleep(s->params.tteat))
 			return (0);
-		if (!gettime(&d->teated))
-			return (0);
-		if (pthread_mutex_unlock(&d->eating))
+		if (!eat(d))
 			return (0);
 		if (n++ == s->params.maxeat && !incfull(s))
 			return (0);
@@ -61,7 +56,8 @@ bool	run(t_philo *d)
 			return (0);
 		if (!print(s, i, "is sleeping"))
 			return (0);
-		smart_sleep(s->params.ttsleep);
+		if (!ft_sleep(s->params.ttsleep))
+			return (0);
 	}
 	return (1);
 }
@@ -77,9 +73,9 @@ bool	spawn(t_state *s, t_philo *a, int i)
 {
 	a[i].index = i;
 	a[i].state = s;
-	if (!gettime(&a[i].teated))
-		return (0);
 	if (pthread_mutex_init(&a[i].eating, NULL))
+		return (0);
+	if (!eat(&a[i]))
 		return (0);
 	if (pthread_create(&(a[i].thread), NULL, thread, a + i))
 		return (0);

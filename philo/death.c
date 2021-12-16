@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 12:01:22 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 15:46:37 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/16 18:15:44 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	checkdeath(t_state *s)
 		i = -1;
 		while (++i < s->params.count)
 		{
-			if (!gettime(&t))
+			if (!ft_time(&t))
 				return (1);
 			if (pthread_mutex_lock(&s->philos[i].eating))
 				return (1);
@@ -45,6 +45,7 @@ bool	checkdeath(t_state *s)
 			if (pthread_mutex_unlock(&s->philos[i].eating))
 				return (1);
 		}
+		// usleep(1000);
 	}
 	return (1);
 }
