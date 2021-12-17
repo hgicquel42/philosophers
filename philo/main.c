@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:25 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/17 10:28:31 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/17 10:54:50 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,31 @@ bool	loopended(t_state *s)
 	return (e);
 }
 
+bool	safequit(t_state *s)
+{
+	int	i;
+
+	printf("Safely quitting\n");
+	i = 0;
+	while (i < s->params.count)
+	{
+		if (pthread_join(s->philos[i].life, 0))
+			return (0);
+		if (pthread_join(s->philos[i].monitor, 0))
+			return (0);
+		i++;
+	}
+	i = 0;
+	while (i < s->params.count)
+		if (pthread_mutex_destroy(&s->forks[i++]))
+			return (0);
+	if (pthread_join(s->fullt, 0))
+		return (0);
+	free(s->forks);
+	free(s->philos);
+	return (1);
+}
+
 int	main(int argc, char **argv)
 {
 	t_state	s;
@@ -51,22 +76,22 @@ int	main(int argc, char **argv)
 	if (argc < 4 || argc > 6)
 		return (1);
 	if (pthread_mutex_init(&s.print, NULL))
-		return (1);
+		return (safequit(&s) || 1);
 	if (pthread_mutex_init(&s.full, NULL))
-		return (1);
+		return (safequit(&s) || 1);
 	if (pthread_mutex_init(&s.ending, NULL))
-		return (1);
+		return (safequit(&s) || 1);
 	s.ended = 0;
 	s.nfull = 0;
 	if (!parse(argc, argv, &s))
-		return (1);
+		return (safequit(&s) || 1);
 	if (!forks(&s))
-		return (1);
+		return (safequit(&s) || 1);
 	if (!threads(&s))
-		return (1);
+		return (safequit(&s) || 1);
 	if (pthread_create(&s.fullt, NULL, runcheckfull, &s))
-		return (1);
+		return (safequit(&s) || 1);
 	if (!loopended(&s))
-		return (1);
-	return (0);
+		return (safequit(&s) + 1);
+	return (safequit(&s));
 }

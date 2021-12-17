@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:55 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/17 10:08:42 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/17 10:44:41 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ typedef struct s_state
 	t_mutex		full;
 	int			nfull;
 	pthread_t	fullt;
-	pthread_t	deatht;
 	t_mutex		ending;
 	bool		ended;
 }	t_state;

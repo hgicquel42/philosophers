@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 18:03:21 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/17 09:58:19 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/17 10:39:57 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ bool	allfull(t_state *s)
 		return (0);
 	s->ended = 1;
 	if (pthread_mutex_unlock(&s->ending))
+		return (0);
+	if (pthread_mutex_unlock(&s->print))
 		return (0);
 	return (1);
 }
