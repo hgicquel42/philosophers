@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:25 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/17 10:54:50 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/17 12:03:14 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	main(int argc, char **argv)
 {
 	t_state	s;
 
-	if (argc < 4 || argc > 6)
+	if (argc < 5 || argc > 6)
 		return (1);
 	if (pthread_mutex_init(&s.print, NULL))
 		return (safequit(&s) || 1);
