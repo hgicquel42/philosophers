@@ -17,8 +17,8 @@ all:	${NAME}
 .c.o:
 	gcc -Wall -Wextra -Werror -pthread -c $< -o ${<:.c=.o}
 
-$(NAME): ${INPUT}
-	gcc -Wall -Wextra -Werror -pthread ${INPUT} -o ${NAME}
+$(NAME): ${OUTPUT}
+	gcc -Wall -Wextra -Werror -pthread ${OUTPUT} -o ${NAME}
 
 clean:
 	rm -f ${OUTPUT}
