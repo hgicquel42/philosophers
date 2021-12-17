@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:25 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/17 12:03:14 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/17 15:05:01 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,10 @@ bool	safequit(t_state *s)
 {
 	int	i;
 
-	printf("Safely quitting\n");
 	i = 0;
 	while (i < s->params.count)
 	{
 		if (pthread_join(s->philos[i].life, 0))
-			return (0);
-		if (pthread_join(s->philos[i].monitor, 0))
 			return (0);
 		i++;
 	}
@@ -63,6 +60,8 @@ bool	safequit(t_state *s)
 		if (pthread_mutex_destroy(&s->forks[i++]))
 			return (0);
 	if (pthread_join(s->fullt, 0))
+		return (0);
+	if (pthread_join(s->deatht, 0))
 		return (0);
 	free(s->forks);
 	free(s->philos);
@@ -90,6 +89,8 @@ int	main(int argc, char **argv)
 	if (!threads(&s))
 		return (safequit(&s) || 1);
 	if (pthread_create(&s.fullt, NULL, runcheckfull, &s))
+		return (safequit(&s) || 1);
+	if (pthread_create(&s.deatht, NULL, runmonitor, &s))
 		return (safequit(&s) || 1);
 	if (!loopended(&s))
 		return (safequit(&s) + 1);

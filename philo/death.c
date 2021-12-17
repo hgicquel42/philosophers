@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 12:01:22 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/17 10:59:41 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/17 15:10:10 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,39 @@ bool	printdeath(t_state *s, int i, long t)
 	return (1);
 }
 
-bool	monitor(t_philo *d)
+bool	checkdeath(t_state *s, t_philo *d)
 {
-	t_state	*s;
 	long	t;
-	bool	e;
 
-	s = d->state;
-	if (!eat(d))
+	if (pthread_mutex_lock(&d->eating))
 		return (0);
-	while (getended(s, &e) && !e)
+	if (!ft_time(&t))
+		return (0);
+	if (d->teated && t - d->teated > s->params.ttdie)
 	{
-		if (pthread_mutex_lock(&d->eating))
-			return (0);
-		if (!ft_time(&t))
-			return (0);
-		if (t - d->teated > s->params.ttdie)
-		{
-			if (pthread_mutex_unlock(&d->eating))
-				return (0);
-			return (printdeath(s, d->index, t));
-		}
 		if (pthread_mutex_unlock(&d->eating))
 			return (0);
-		usleep(1000);
+		return (printdeath(s, d->index, t));
+	}
+	if (pthread_mutex_unlock(&d->eating))
+		return (0);
+	return (1);
+}
+
+bool	monitor(t_state *s)
+{
+	int		i;
+	bool	e;
+
+	while (getended(s, &e) && !e)
+	{
+		i = 0;
+		while (i < s->params.count)
+		{
+			if (!checkdeath(s, s->philos + i++))
+				return (0);
+			usleep(200);
+		}
 	}
 	return (e);
 }

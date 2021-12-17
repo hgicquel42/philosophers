@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 18:03:21 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/17 11:32:26 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/17 15:19:06 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ bool	allfull(t_state *s)
 			return (0);
 		return (e);
 	}
-	if (printf("All philosophers are full\n") < 0)
-		return (0);
 	if (pthread_mutex_lock(&s->ending))
 		return (0);
 	s->ended = 1;
