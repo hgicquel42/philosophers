@@ -8,6 +8,7 @@ INPUT = \
 	utils.c \
 	full.c \
 	death.c \
+	life.c \
 
 OUTPUT = ${INPUT:.c=.o}
 

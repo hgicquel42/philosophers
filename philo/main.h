@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:55 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 19:20:17 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/17 10:08:42 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ bool	threads(t_state *s);
 
 bool	print(t_state *s, int i, char *msg);
 
+bool	getended(t_state *s, bool *r);
+
 bool	incfull(t_state *s);
 
 bool	getfull(t_state *s, int *r);
@@ -86,6 +88,8 @@ bool	allfull(t_state *s);
 void	*runcheckfull(void *p);
 
 void	*runmonitor(void *p);
+
+void	*runlife(void *p);
 
 bool	eat(t_philo *d);
 

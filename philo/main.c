@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:21:25 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 19:13:46 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/17 10:28:31 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	parse(int argc, char **argv, t_state *s)
 	return (1);
 }
 
-bool	checkend(t_state *s, bool *r)
+bool	getended(t_state *s, bool *r)
 {
 	if (pthread_mutex_lock(&s->ending))
 		return (0);
@@ -35,18 +35,13 @@ bool	checkend(t_state *s, bool *r)
 	return (1);
 }
 
-bool	loopend(t_state *s)
+bool	loopended(t_state *s)
 {
-	bool	ended;
+	bool	e;
 
-	ended = 0;
-	while (checkend(s, &ended))
-	{
-		if (ended)
-			return (1);
+	while (getended(s, &e) && !e)
 		usleep(100);
-	}
-	return (0);
+	return (e);
 }
 
 int	main(int argc, char **argv)
@@ -71,7 +66,7 @@ int	main(int argc, char **argv)
 		return (1);
 	if (pthread_create(&s.fullt, NULL, runcheckfull, &s))
 		return (1);
-	if (!loopend(&s))
+	if (!loopended(&s))
 		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 12:01:22 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 19:43:53 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/17 10:25:47 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@ bool	monitor(t_philo *d)
 {
 	t_state	*s;
 	long	t;
+	bool	e;
 
 	s = d->state;
 	if (!eat(d))
 		return (0);
-	while (1)
+	while (getended(s, &e) && !e)
 	{
 		if (pthread_mutex_lock(&d->eating))
 			return (0);
@@ -46,7 +47,7 @@ bool	monitor(t_philo *d)
 			return (0);
 		usleep(1000);
 	}
-	return (0);
+	return (e);
 }
 
 void	*runmonitor(void *p)

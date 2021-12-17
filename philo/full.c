@@ -6,7 +6,7 @@
 /*   By: hgicquel <hgicquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 18:03:21 by hgicquel          #+#    #+#             */
-/*   Updated: 2021/12/16 15:38:07 by hgicquel         ###   ########.fr       */
+/*   Updated: 2021/12/17 09:58:19 by hgicquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,14 @@ bool	allfull(t_state *s)
 
 bool	checkfull(t_state *s)
 {
-	int	n;
+	int		n;
+	bool	e;
 
 	n = 0;
-	while (getfull(s, &n))
+	while (getfull(s, &n) && getended(s, &e) && !e)
 		if (n == s->params.count)
 			return (allfull(s));
-	return (1);
+	return (e);
 }
 
 void	*runcheckfull(void *p)
